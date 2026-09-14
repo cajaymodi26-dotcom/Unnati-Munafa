@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Unnati Munafa — Kitchen Studio</title>
+<title>Unnati Cloud Kitchen</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Unnati Munafa">
 <meta name="theme-color" content="#1F1512">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F8F5F0;
@@ -19,9 +19,9 @@
     --ink: #1F1512;
     --ink-muted: #726259;
     --line: #E8DED1;
-    --primary: #943428;
-    --primary-light: #FDF2F0;
-    --accent: #D48B28;
+    --primary: #8C2525;
+    --primary-dark: #631717;
+    --accent: #C5832B;
     --accent-soft: #FDF5E8;
     --success: #2A6A4E;
     --success-soft: #E8F4EE;
@@ -62,7 +62,7 @@
     top: -50px; right: -50px;
     width: 170px; height: 170px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(212,139,40,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(197,131,43,0.3) 0%, transparent 70%);
   }
   .hero-top {
     display: flex;
@@ -99,17 +99,8 @@
     gap: 5px;
   }
 
-  .profit-display {
-    margin-top: 20px;
-    position: relative;
-    z-index: 1;
-  }
-  .profit-label {
-    font-size: 12px;
-    color: rgba(248, 245, 240, 0.7);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
+  .profit-display { margin-top: 20px; position: relative; z-index: 1; }
+  .profit-label { font-size: 12px; color: rgba(248, 245, 240, 0.7); font-weight: 600; letter-spacing: 0.5px; }
   .profit-val {
     font-size: 46px;
     font-weight: 700;
@@ -206,7 +197,6 @@
     outline: none;
     color: var(--ink);
   }
-  .cust-input-grid input:focus { border-color: var(--ink); }
 
   /* Food Catalog & Items */
   .category-heading {
@@ -227,7 +217,6 @@
     align-items: center;
     justify-content: space-between;
     box-shadow: var(--shadow);
-    transition: transform 0.1s;
   }
   .food-details h5 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .food-pricing { font-size: 13px; color: var(--ink-muted); display: flex; gap: 8px; align-items: center; }
@@ -261,13 +250,7 @@
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   }
-  .counter-btn:active { background: var(--surface-subtle); }
-  .counter-num {
-    min-width: 22px;
-    text-align: center;
-    font-weight: 800;
-    font-size: 15px;
-  }
+  .counter-num { min-width: 22px; text-align: center; font-weight: 800; font-size: 15px; }
 
   /* Cart Float Bar */
   .float-cart {
@@ -352,8 +335,52 @@
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    padding: 4px 6px;
   }
+
+  /* Customer Menu Sharing Banner */
+  .menu-share-banner {
+    background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E6 100%);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(197, 131, 43, 0.12);
+  }
+  .share-banner-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .share-banner-desc {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .share-btn-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .share-btn {
+    border: none;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .share-btn-wa { background: #25D366; color: #FFF; }
+  .share-btn-pdf { background: var(--primary); color: #FFF; }
 
   /* Management & Drilldown */
   .manage-item-card {
@@ -523,6 +550,159 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
   .toast-banner.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* =========================================================
+     ELEGANT RESTAURANT MENU CARD (PDF / PRINT STYLING)
+     ========================================================= */
+  #printableMenu { display: none; }
+
+  @media print {
+    @page {
+      margin: 10mm;
+      size: A4 portrait;
+    }
+    html, body {
+      background: #FFF !important;
+      color: #1F1512 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body * { visibility: hidden; }
+    #printableMenu, #printableMenu * { visibility: visible; }
+    #printableMenu {
+      display: block !important;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      background: #FCFAF6 !important;
+      border: 3px double #C5832B;
+      padding: 32px 36px;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
+    .fancy-header {
+      text-align: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #C5832B;
+      position: relative;
+    }
+    .fancy-pre-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #C5832B;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .fancy-kitchen-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: #8C2525;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .fancy-tagline {
+      font-size: 13px;
+      font-style: italic;
+      color: #6B564C;
+      margin-bottom: 12px;
+    }
+    .fancy-badges-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+    .fancy-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .badge-veg {
+      background: #E8F4EE !important;
+      color: #2A6A4E !important;
+      border: 1px solid #B8E0CC;
+    }
+    .badge-hygiene {
+      background: #FDF5E8 !important;
+      color: #C5832B !important;
+      border: 1px solid #F3DFB0;
+    }
+    .fancy-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 24px;
+    }
+    .fancy-cat-group {
+      break-inside: avoid;
+    }
+    .fancy-cat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #8C2525;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .fancy-cat-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, #C5832B, transparent);
+    }
+    .fancy-dish-row {
+      display: flex;
+      align-items: baseline;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+    .fancy-dish-name {
+      font-weight: 600;
+      color: #1F1512;
+    }
+    .fancy-dish-dots {
+      flex: 1;
+      border-bottom: 1.5px dotted #D6C7B2;
+      margin: 0 10px;
+      transform: translateY(-4px);
+    }
+    .fancy-dish-price {
+      font-weight: 800;
+      color: #8C2525;
+      font-size: 15px;
+      background: #FAF2E6 !important;
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: 1px solid #EADBCC;
+    }
+    .fancy-footer {
+      margin-top: 36px;
+      padding-top: 18px;
+      border-top: 1px solid #D9A441;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .fancy-footer-call {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #8C2525;
+    }
+    .fancy-footer-sub {
+      font-size: 11.5px;
+      color: #726259;
+    }
+  }
 </style>
 </head>
 <body>
@@ -588,6 +768,20 @@
 
   <!-- View 3: Menu & Real Costs -->
   <div class="view-container" id="view-menu">
+    <!-- Customer Menu Sharing Banner -->
+    <div class="menu-share-banner">
+      <div class="share-banner-title">✨ Customer Menu Card Generator</div>
+      <div class="share-banner-desc">Share a neat price list with customers (all internal costs & margins remain strictly hidden).</div>
+      <div class="share-btn-row">
+        <button class="share-btn share-btn-wa" id="shareMenuWhatsAppBtn">
+          Share on WhatsApp
+        </button>
+        <button class="share-btn share-btn-pdf" id="printMenuPdfBtn">
+          Download / Print PDF
+        </button>
+      </div>
+    </div>
+
     <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px; line-height:1.5;">
       Each dish is broken down into realistic ingredients, multi-compartment packaging, and utility expenses. Edit any individual cost to reflect current market rates.
     </p>
@@ -622,6 +816,36 @@
 
   <div class="toast-banner" id="toastMsg"></div>
 
+  <!-- =========================================================
+       PRINT / PDF CONTAINER (BEAUTIFUL RESTAURANT CARD)
+       ========================================================= -->
+  <div id="printableMenu">
+    <div class="fancy-header">
+      <div class="fancy-pre-tag">Handcrafted Gourmet Meals</div>
+      <h1 class="fancy-kitchen-title">Unnati Cloud Kitchen</h1>
+      <div class="fancy-tagline">Pure, hygienic and wholesome meals cooked with maternal care</div>
+      <div class="fancy-badges-row">
+        <span class="fancy-badge badge-veg">● 100% Pure Vegetarian</span>
+        <span class="fancy-badge badge-hygiene">★ Fresh Ingredients Only</span>
+      </div>
+    </div>
+
+    <div class="fancy-grid" id="fancyPrintableItems">
+      <!-- Injected dynamically via JS -->
+    </div>
+
+    <div class="fancy-footer">
+      <div>
+        <div class="fancy-footer-call">Prepared Fresh on Pre-Order</div>
+        <div class="fancy-footer-sub">Please place your lunch orders by 10 AM & dinner by 5 PM</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="fancy-footer-call">Direct Kitchen Line</div>
+        <div class="fancy-footer-sub">WhatsApp or Call to Place Orders</div>
+      </div>
+    </div>
+  </div>
+
 <script>
 (function(){
   const CATEGORIES = ["Lunch", "Dinner", "Sunday Special Breakfast", "Add-ons", "Beverages"];
@@ -630,9 +854,7 @@
     return { id: 'c_' + Math.random().toString(36).substr(2, 7), label, amount: parseFloat(amount)||0 };
   }
 
-  // Realistic Market-Calibrated Menu
   const INITIAL_MENU = [
-    // Lunch
     {
       id: "thali-full",
       cat: "Lunch",
@@ -678,7 +900,6 @@
         cItem("Fuel & Utilities", 6)
       ]
     },
-    // Dinner
     {
       id: "paratha-sabji",
       cat: "Dinner",
@@ -718,7 +939,6 @@
         cItem("Gas Fuel", 7)
       ]
     },
-    // Sunday Special
     {
       id: "puri-aloo",
       cat: "Sunday Special Breakfast",
@@ -745,7 +965,6 @@
         cItem("Deep Frying & Pressure Cooking LPG", 9)
       ]
     },
-    // Add-ons
     {
       id: "roti-plain",
       cat: "Add-ons",
@@ -769,7 +988,6 @@
         cItem("LPG Burn", 2)
       ]
     },
-    // Beverages
     {
       id: "tea-ginger",
       cat: "Beverages",
@@ -810,7 +1028,6 @@
     setTimeout(() => el.classList.remove('visible'), 1800);
   }
 
-  // Persistence
   function loadStorage() {
     try {
       const m = localStorage.getItem('um_menu');
@@ -839,7 +1056,6 @@
     renderManagement();
   }
 
-  // Dashboard calculations
   function refreshDashboard() {
     let rev = 0, prof = 0;
     transactions.forEach(t => {
@@ -854,7 +1070,6 @@
     document.getElementById('heroMarginPct').textContent = marginPct + '% margin';
   }
 
-  // Catalog View
   function renderCatalog() {
     const root = document.getElementById('catalogListing');
     root.innerHTML = '';
@@ -917,7 +1132,6 @@
     cartBar.classList.add('active');
   }
 
-  // Handle Cart Interactions
   document.getElementById('catalogListing').addEventListener('click', e => {
     const btn = e.target.closest('.counter-btn');
     if(!btn) return;
@@ -969,7 +1183,6 @@
     transactions.unshift(txn);
     commitTxns();
 
-    // Reset Form
     cart = {};
     document.getElementById('orderCustName').value = '';
     document.getElementById('orderCustPhone').value = '';
@@ -979,7 +1192,6 @@
     notify('Sale saved! Profit: ' + inr(totalProfit));
   });
 
-  // History & WhatsApp Bill
   function renderHistory() {
     const root = document.getElementById('historyListing');
     root.innerHTML = '';
@@ -999,7 +1211,6 @@
       });
       const dishesStr = t.items.map(i => `${i.qty}× ${i.name}`).join(', ');
 
-      // Build WhatsApp Bill Link
       let waLink = '';
       if(t.custPhone) {
         let text = `*Invoice from Unnati Cloud Kitchen*\nDate: ${dateStr}\n------------------------\n`;
@@ -1048,7 +1259,6 @@
     }
   });
 
-  // Management & Granular Breakdown
   function renderManagement() {
     const root = document.getElementById('managementListing');
     root.innerHTML = '';
@@ -1119,7 +1329,6 @@
     });
   }
 
-  // Manage interactions
   document.getElementById('managementListing').addEventListener('input', e => {
     const dishId = e.target.dataset.dish;
     if(!dishId) return;
@@ -1151,7 +1360,6 @@
     const dishId = e.target.dataset.dish;
     const dish = menu.find(m => m.id === dishId);
 
-    // Delete component
     if(e.target.classList.contains('entry-del')) {
       const cid = e.target.dataset.cid;
       dish.costItems = dish.costItems.filter(x => x.id !== cid);
@@ -1160,7 +1368,6 @@
       return;
     }
 
-    // Add cost row
     if(e.target.classList.contains('add-cost-btn')) {
       dish.costItems.push(cItem("New Cost Component", 5));
       commitMenu();
@@ -1168,7 +1375,6 @@
       return;
     }
 
-    // Delete Entire Dish
     if(e.target.classList.contains('delete-item-link')) {
       const id = e.target.dataset.id;
       if(confirm("Remove this entire dish from your kitchen menu?")) {
@@ -1180,7 +1386,6 @@
     }
   });
 
-  // Add New Dish
   document.getElementById('addDishBtn').addEventListener('click', () => {
     const cat = document.getElementById('newDishCat').value;
     const name = document.getElementById('newDishName').value.trim();
@@ -1210,6 +1415,62 @@
     document.getElementById('newDishBaseCost').value = '';
     sync();
     notify("Dish added with automatic cost drilldown!");
+  });
+
+  // Feature: WhatsApp Customer Menu Formatter
+  document.getElementById('shareMenuWhatsAppBtn').addEventListener('click', () => {
+    if(!menu.length) {
+      notify("No items in menu.");
+      return;
+    }
+    let text = "🌟 *UNNATI CLOUD KITCHEN* 🌟\n_Fresh, Pure & Hygienic Home-Cooked Food_\n";
+    CATEGORIES.forEach(cat => {
+      const items = menu.filter(m => m.cat === cat);
+      if(items.length) {
+        text += `\n*${cat.toUpperCase()}*\n`;
+        items.forEach(dish => {
+          text += `• ${dish.name} — ₹${dish.price}\n`;
+        });
+      }
+    });
+    text += "\n🌿 100% Pure Vegetarian\n📞 Please place orders in advance via message or call!";
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+  });
+
+  // Feature: Render Fancy Customer Menu & Trigger Print / PDF
+  document.getElementById('printMenuPdfBtn').addEventListener('click', () => {
+    const container = document.getElementById('fancyPrintableItems');
+    container.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+      const items = menu.filter(m => m.cat === cat);
+      if(items.length) {
+        const group = document.createElement('div');
+        group.className = 'fancy-cat-group';
+
+        const title = document.createElement('div');
+        title.className = 'fancy-cat-title';
+        title.textContent = cat;
+        group.appendChild(title);
+
+        items.forEach(dish => {
+          const row = document.createElement('div');
+          row.className = 'fancy-dish-row';
+          row.innerHTML = `
+            <div class="fancy-dish-name">${dish.name}</div>
+            <div class="fancy-dish-dots"></div>
+            <div class="fancy-dish-price">₹${dish.price}</div>
+          `;
+          group.appendChild(row);
+        });
+
+        container.appendChild(group);
+      }
+    });
+
+    // Invoke system Print/PDF Dialog
+    window.print();
   });
 
   // Export CSV
