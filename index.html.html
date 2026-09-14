@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Unnati Munafa — Kitchen Studio</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Unnati Munafa">
+<meta name="theme-color" content="#1F1512">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F8F5F0;
+    --surface: #FFFFFF;
+    --surface-subtle: #F3ECE2;
+    --ink: #1F1512;
+    --ink-muted: #726259;
+    --line: #E8DED1;
+    --primary: #943428;
+    --primary-light: #FDF2F0;
+    --accent: #D48B28;
+    --accent-soft: #FDF5E8;
+    --success: #2A6A4E;
+    --success-soft: #E8F4EE;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 20px -2px rgba(31, 21, 18, 0.06);
+    --shadow-float: 0 12px 36px rgba(31, 21, 18, 0.18);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+    min-height: 100vh;
+    padding-bottom: 120px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: 'Playfair Display', serif; }
+
+  /* Hero Dashboard */
+  .hero-card {
+    background: linear-gradient(145deg, #241410 0%, #160B08 100%);
+    color: #F8F5F0;
+    margin: 12px 14px 16px;
+    border-radius: var(--radius-lg);
+    padding: 22px 20px 20px;
+    box-shadow: 0 10px 30px rgba(22, 11, 8, 0.25);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .hero-card::before {
+    content: "";
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 170px; height: 170px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,139,40,0.3) 0%, transparent 70%);
+  }
+  .hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .brand-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .app-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFF;
+    letter-spacing: -0.3px;
+  }
+  .app-name span { color: var(--accent); font-style: italic; }
+  .export-btn {
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #F8F5F0;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .profit-display {
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .profit-label {
+    font-size: 12px;
+    color: rgba(248, 245, 240, 0.7);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .profit-val {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 4px;
+    color: #FFF;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .profit-margin-badge {
+    font-size: 13px;
+    background: var(--success-soft);
+    color: var(--success);
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 1;
+  }
+  .stat-block p { font-size: 11.5px; color: rgba(248,245,240,0.65); font-weight: 500; }
+  .stat-block h4 { font-size: 17px; font-weight: 700; color: #FFF; margin-top: 2px; }
+
+  /* Tab Navigation */
+  .nav-tabs {
+    display: flex;
+    margin: 0 14px 14px;
+    background: var(--surface);
+    padding: 5px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+    gap: 6px;
+  }
+  .tab-item {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tab-item.active {
+    background: var(--ink);
+    color: #FFF;
+    box-shadow: 0 2px 8px rgba(31,21,18,0.15);
+  }
+
+  .view-container { display: none; padding: 0 14px; }
+  .view-container.active { display: block; }
+
+  /* Customer Box */
+  .customer-panel {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .cust-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cust-input-grid { display: flex; flex-direction: column; gap: 8px; }
+  .cust-input-grid input {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13.5px;
+    outline: none;
+    color: var(--ink);
+  }
+  .cust-input-grid input:focus { border-color: var(--ink); }
+
+  /* Food Catalog & Items */
+  .category-heading {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 20px 2px 10px;
+    color: var(--primary);
+  }
+  .category-heading:first-of-type { margin-top: 4px; }
+
+  .food-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s;
+  }
+  .food-details h5 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .food-pricing { font-size: 13px; color: var(--ink-muted); display: flex; gap: 8px; align-items: center; }
+  .margin-pill {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 4px 6px;
+  }
+  .counter-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .counter-btn:active { background: var(--surface-subtle); }
+  .counter-num {
+    min-width: 22px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 15px;
+  }
+
+  /* Cart Float Bar */
+  .float-cart {
+    position: fixed;
+    bottom: 20px;
+    left: 14px; right: 14px;
+    background: var(--ink);
+    color: #FFF;
+    padding: 12px 18px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow-float);
+    transform: translateY(150%);
+    transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+  }
+  .float-cart.active { transform: translateY(0); }
+  .cart-meta-qty { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .cart-meta-amt { font-size: 20px; font-weight: 700; color: #FFF; }
+  .checkout-btn {
+    background: var(--accent);
+    color: var(--ink);
+    border: none;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  /* History Feed */
+  .order-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  .order-stamp { font-size: 12px; color: var(--ink-muted); font-weight: 600; }
+  .order-cust-info { font-size: 13.5px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+  .order-items-list { font-size: 13px; line-height: 1.6; color: var(--ink); margin-bottom: 12px; }
+  .order-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .order-financials { display: flex; gap: 14px; align-items: baseline; }
+  .rev-tag { font-size: 13px; color: var(--ink-muted); }
+  .profit-tag { font-size: 14px; font-weight: 800; color: var(--success); }
+  .actions-row { display: flex; gap: 8px; }
+  .whatsapp-link {
+    background: #25D366;
+    color: #FFF;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .del-btn {
+    border: none;
+    background: transparent;
+    color: #B94A48;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+
+  /* Management & Drilldown */
+  .manage-item-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .manage-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .manage-title { font-size: 15.5px; font-weight: 700; }
+  .delete-item-link { font-size: 12px; color: #B94A48; background: transparent; border: none; cursor: pointer; font-weight: 600; }
+  
+  .price-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .input-label { font-size: 11px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 4px; }
+  .input-field-box {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0 10px;
+  }
+  .input-field-box span { font-size: 13px; font-weight: 700; color: var(--ink-muted); margin-right: 4px; }
+  .input-field-box input {
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    color: var(--ink);
+  }
+  
+  .breakdown-drawer {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px dashed var(--line);
+  }
+  .breakdown-drawer-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .drilldown-entry {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .entry-name {
+    flex: 1;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 12.5px;
+    font-family: inherit;
+    outline: none;
+  }
+  .entry-amt-wrap {
+    width: 75px;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0 6px;
+  }
+  .entry-amt-wrap span { font-size: 11px; color: var(--ink-muted); }
+  .entry-amt {
+    border: none;
+    background: transparent;
+    padding: 6px 2px;
+    width: 100%;
+    font-size: 12.5px;
+    font-weight: 700;
+    outline: none;
+    font-family: inherit;
+  }
+  .entry-del {
+    background: transparent;
+    border: none;
+    color: #B94A48;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .add-cost-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    margin-top: 4px;
+  }
+
+  .add-dish-box {
+    background: var(--accent-soft);
+    border: 1.5px dashed var(--accent);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 24px;
+  }
+  .add-dish-box h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+  .dish-form { display: flex; flex-direction: column; gap: 8px; }
+  .dish-form input, .dish-form select {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+    outline: none;
+  }
+  .dish-submit {
+    background: var(--ink);
+    color: #FFF;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  /* Status Toast */
+  .toast-banner {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50px);
+    background: var(--ink);
+    color: #FFF;
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  }
+  .toast-banner.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+  <!-- Dashboard -->
+  <div class="hero-card">
+    <div class="hero-top">
+      <div>
+        <div class="brand-tag">Cloud Studio</div>
+        <h1 class="app-name serif">Unnati <span>Munafa</span></h1>
+      </div>
+      <button class="export-btn" id="exportCsvBtn">Export CSV</button>
+    </div>
+
+    <div class="profit-display">
+      <div class="profit-label">NET PROFIT EARNED</div>
+      <div class="profit-val">
+        <span id="heroProfit">₹0</span>
+        <span class="profit-margin-badge" id="heroMarginPct">0% margin</span>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-block">
+        <p>Total Revenue</p>
+        <h4 id="heroRevenue">₹0</h4>
+      </div>
+      <div class="stat-block">
+        <p>Orders Delivered</p>
+        <h4 id="heroOrders">0</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="nav-tabs">
+    <button class="tab-item active" data-tab="order">Log Order</button>
+    <button class="tab-item" data-tab="history">History</button>
+    <button class="tab-item" data-tab="menu">Menu & Costs</button>
+  </div>
+
+  <!-- View 1: New Sale -->
+  <div class="view-container active" id="view-order">
+    <div class="customer-panel">
+      <div class="cust-title">
+        <span>Order Metadata</span>
+        <span style="font-size:11px; text-transform:none; font-weight:500;">(Optional)</span>
+      </div>
+      <div class="cust-input-grid">
+        <input type="text" id="orderCustName" placeholder="Customer Name (e.g. Ramesh Bhai)">
+        <input type="tel" id="orderCustPhone" placeholder="10-digit WhatsApp No. (e.g. 9876543210)">
+        <input type="text" id="orderCustNotes" placeholder="Delivery address / special instructions">
+      </div>
+    </div>
+
+    <div id="catalogListing"></div>
+  </div>
+
+  <!-- View 2: History -->
+  <div class="view-container" id="view-history">
+    <div id="historyListing"></div>
+  </div>
+
+  <!-- View 3: Menu & Real Costs -->
+  <div class="view-container" id="view-menu">
+    <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px; line-height:1.5;">
+      Each dish is broken down into realistic ingredients, multi-compartment packaging, and utility expenses. Edit any individual cost to reflect current market rates.
+    </p>
+    <div id="managementListing"></div>
+
+    <div class="add-dish-box">
+      <h4>+ Add New Dish / Variation</h4>
+      <div class="dish-form">
+        <select id="newDishCat">
+          <option value="Lunch">Lunch</option>
+          <option value="Dinner">Dinner</option>
+          <option value="Sunday Special Breakfast">Sunday Special Breakfast</option>
+          <option value="Add-ons">Add-ons</option>
+          <option value="Beverages">Beverages</option>
+        </select>
+        <input type="text" id="newDishName" placeholder="Dish Name">
+        <input type="number" id="newDishPrice" placeholder="Selling Price (₹)">
+        <input type="number" id="newDishBaseCost" placeholder="Approx. Base Food Cost (₹)">
+        <button class="dish-submit" id="addDishBtn">Add to Active Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Bottom Bar -->
+  <div class="float-cart" id="cartBar">
+    <div>
+      <div class="cart-meta-qty" id="cartQty">0 items</div>
+      <div class="cart-meta-amt" id="cartAmount">₹0</div>
+    </div>
+    <button class="checkout-btn" id="confirmSaleBtn">Save Sale →</button>
+  </div>
+
+  <div class="toast-banner" id="toastMsg"></div>
+
+<script>
+(function(){
+  const CATEGORIES = ["Lunch", "Dinner", "Sunday Special Breakfast", "Add-ons", "Beverages"];
+
+  function cItem(label, amount){
+    return { id: 'c_' + Math.random().toString(36).substr(2, 7), label, amount: parseFloat(amount)||0 };
+  }
+
+  // Realistic Market-Calibrated Menu
+  const INITIAL_MENU = [
+    // Lunch
+    {
+      id: "thali-full",
+      cat: "Lunch",
+      name: "Full Thali (3 Roti, 2 Sabji, Rice, Dal, Papad)",
+      price: 249,
+      costItems: [
+        cItem("Atta, Ghee & Spices (3 Rotis)", 12),
+        cItem("Rice (150g cooked) & Toor Dal", 14),
+        cItem("Paneer/Special Sabji Portion", 14),
+        cItem("Seasonal Dry Sabji Portion", 8),
+        cItem("Papad, Salad & Pickle", 4),
+        cItem("5-CP Tray + Airtight Lid", 12),
+        cItem("Foil Wrap, Cutlery, Bag", 6),
+        cItem("LPG, Water & Consumables", 10)
+      ]
+    },
+    {
+      id: "mini-thali-roti",
+      cat: "Lunch",
+      name: "Mini Thali (4 Roti, 1 Sabji)",
+      price: 149,
+      costItems: [
+        cItem("Atta & Tawa Butter (4 Rotis)", 14),
+        cItem("Mixed Seasonal Sabji", 14),
+        cItem("Salad & Pickle Sachet", 3),
+        cItem("Meal Box / Container", 7),
+        cItem("Carry Bag & Napkin", 4),
+        cItem("Fuel & Consumables", 6)
+      ]
+    },
+    {
+      id: "mini-thali-rice",
+      cat: "Lunch",
+      name: "Mini Thali (Rice, Dal, 1 Sabji, Papad)",
+      price: 149,
+      costItems: [
+        cItem("Basmati Steam Rice (200g)", 8),
+        cItem("Dal Tadka (150ml)", 8),
+        cItem("Mixed Seasonal Sabji", 14),
+        cItem("Papad & Pickle", 3),
+        cItem("Round Containers (300ml x 2)", 8),
+        cItem("Bag & Cutlery", 4),
+        cItem("Fuel & Utilities", 6)
+      ]
+    },
+    // Dinner
+    {
+      id: "paratha-sabji",
+      cat: "Dinner",
+      name: "3 Tawa Paratha with 1 Sabji",
+      price: 149,
+      costItems: [
+        cItem("Atta & Oil/Ghee for 3 Parathas", 16),
+        cItem("Seasonal Gravy Sabji", 15),
+        cItem("Aluminum Foil & Container", 8),
+        cItem("Fuel & Utensils", 6)
+      ]
+    },
+    {
+      id: "aloo-paratha-dinner",
+      cat: "Dinner",
+      name: "Aloo Paratha (2pc) with Fresh Curd",
+      price: 149,
+      costItems: [
+        cItem("Atta & Potato Filling Masala", 14),
+        cItem("Ghee/Butter for Shallow Fry", 7),
+        cItem("Packaged Dahi (100g Cup)", 7),
+        cItem("Silver Foil Pouch & Container", 7),
+        cItem("Paper Bag & Pickle", 3),
+        cItem("Gas Fuel (High Tawa Heat)", 6)
+      ]
+    },
+    {
+      id: "paneer-paratha-dinner",
+      cat: "Dinner",
+      name: "Paneer Paratha (2pc) with Chutney",
+      price: 199,
+      costItems: [
+        cItem("Fresh Malai Paneer Grated (100g)", 38),
+        cItem("Atta, Ghee & Spices", 12),
+        cItem("Mint Chutney & Pickle", 5),
+        cItem("Foil Packing & Bag", 8),
+        cItem("Gas Fuel", 7)
+      ]
+    },
+    // Sunday Special
+    {
+      id: "puri-aloo",
+      cat: "Sunday Special Breakfast",
+      name: "4 Puri with Bedmi Aloo Sabji",
+      price: 119,
+      costItems: [
+        cItem("Atta & Frying Oil Absorption", 15),
+        cItem("Halwai-Style Aloo Gravy", 12),
+        cItem("Round Spill-Proof Container", 6),
+        cItem("Carry Pouch & Tissues", 3),
+        cItem("Deep Frying Gas Burn", 7)
+      ]
+    },
+    {
+      id: "puri-chole",
+      cat: "Sunday Special Breakfast",
+      name: "4 Puri with Amritsari Chole",
+      price: 149,
+      costItems: [
+        cItem("Atta & Frying Oil Absorption", 15),
+        cItem("Kabuli Chana Masala (Spices/Gravy)", 18),
+        cItem("Pickled Onion & Green Chilli", 3),
+        cItem("Packaging Containers & Bag", 8),
+        cItem("Deep Frying & Pressure Cooking LPG", 9)
+      ]
+    },
+    // Add-ons
+    {
+      id: "roti-plain",
+      cat: "Add-ons",
+      name: "Plain Phulka Roti",
+      price: 25,
+      costItems: [
+        cItem("Atta & Rolling Powder", 4),
+        cItem("Foil Wrap", 1.5),
+        cItem("LPG Burn", 2)
+      ]
+    },
+    {
+      id: "roti-ghee",
+      cat: "Add-ons",
+      name: "Desi Ghee Phulka Roti",
+      price: 30,
+      costItems: [
+        cItem("Atta & Rolling Powder", 4),
+        cItem("Pure Cow Ghee Basting", 4.5),
+        cItem("Foil Wrap", 1.5),
+        cItem("LPG Burn", 2)
+      ]
+    },
+    // Beverages
+    {
+      id: "tea-ginger",
+      cat: "Beverages",
+      name: "Adrak Wali Chai (2 Servings)",
+      price: 79,
+      costItems: [
+        cItem("Full Cream Milk (180ml)", 12),
+        cItem("CTC Tea Dust, Fresh Ginger, Sugar", 5),
+        cItem("Insulated Heat Retention Pouch", 11),
+        cItem("2 Small Paper Cups", 2.5),
+        cItem("Boiling LPG", 4)
+      ]
+    },
+    {
+      id: "masala-chaas",
+      cat: "Beverages",
+      name: "Spiced Masala Buttermilk (300ml)",
+      price: 59,
+      costItems: [
+        cItem("Curd, Black Salt, Jeera, Coriander", 10),
+        cItem("Chilled Bottling Container / Sealed Glass", 6),
+        cItem("RO Ice & Preparation", 2)
+      ]
+    }
+  ];
+
+  let menu = [];
+  let transactions = [];
+  let cart = {};
+
+  const inr = n => "₹" + Math.round(n).toLocaleString('en-IN');
+  const getDishCost = dish => (dish.costItems || []).reduce((acc, cur) => acc + (parseFloat(cur.amount) || 0), 0);
+
+  function notify(text) {
+    const el = document.getElementById('toastMsg');
+    el.textContent = text;
+    el.classList.add('visible');
+    setTimeout(() => el.classList.remove('visible'), 1800);
+  }
+
+  // Persistence
+  function loadStorage() {
+    try {
+      const m = localStorage.getItem('um_menu');
+      menu = m ? JSON.parse(m) : INITIAL_MENU;
+      const t = localStorage.getItem('um_txns');
+      transactions = t ? JSON.parse(t) : [];
+    } catch(e) {
+      menu = INITIAL_MENU;
+      transactions = [];
+    }
+    sync();
+  }
+
+  function commitMenu() {
+    localStorage.setItem('um_menu', JSON.stringify(menu));
+  }
+
+  function commitTxns() {
+    localStorage.setItem('um_txns', JSON.stringify(transactions));
+  }
+
+  function sync() {
+    refreshDashboard();
+    renderCatalog();
+    renderHistory();
+    renderManagement();
+  }
+
+  // Dashboard calculations
+  function refreshDashboard() {
+    let rev = 0, prof = 0;
+    transactions.forEach(t => {
+      rev += t.totalSale;
+      prof += t.totalProfit;
+    });
+    document.getElementById('heroRevenue').textContent = inr(rev);
+    document.getElementById('heroProfit').textContent = inr(prof);
+    document.getElementById('heroOrders').textContent = transactions.length;
+    
+    const marginPct = rev > 0 ? Math.round((prof / rev) * 100) : 0;
+    document.getElementById('heroMarginPct').textContent = marginPct + '% margin';
+  }
+
+  // Catalog View
+  function renderCatalog() {
+    const root = document.getElementById('catalogListing');
+    root.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+      const items = menu.filter(m => m.cat === cat);
+      if(!items.length) return;
+
+      const title = document.createElement('h3');
+      title.className = 'category-heading serif';
+      title.textContent = cat;
+      root.appendChild(title);
+
+      items.forEach(dish => {
+        const cost = getDishCost(dish);
+        const margin = dish.price - cost;
+        const marginPct = dish.price ? Math.round((margin / dish.price) * 100) : 0;
+        const qty = cart[dish.id] || 0;
+
+        const card = document.createElement('div');
+        card.className = 'food-card';
+        card.innerHTML = `
+          <div class="food-details">
+            <h5>${dish.name}</h5>
+            <div class="food-pricing">
+              <span style="font-weight:700; color:var(--ink);">${inr(dish.price)}</span>
+              <span class="margin-pill">${marginPct}% margin</span>
+            </div>
+          </div>
+          <div class="counter">
+            <button class="counter-btn" data-action="sub" data-id="${dish.id}">−</button>
+            <span class="counter-num" id="qty-${dish.id}">${qty}</span>
+            <button class="counter-btn" data-action="add" data-id="${dish.id}">+</button>
+          </div>
+        `;
+        root.appendChild(card);
+      });
+    });
+
+    updateCartStatus();
+  }
+
+  function updateCartStatus() {
+    const keys = Object.keys(cart).filter(k => cart[k] > 0);
+    const cartBar = document.getElementById('cartBar');
+    if (!keys.length) {
+      cartBar.classList.remove('active');
+      return;
+    }
+    let totalItems = 0, totalVal = 0;
+    keys.forEach(k => {
+      const dish = menu.find(m => m.id === k);
+      if(dish) {
+        totalItems += cart[k];
+        totalVal += dish.price * cart[k];
+      }
+    });
+    document.getElementById('cartQty').textContent = totalItems + (totalItems === 1 ? ' dish' : ' dishes');
+    document.getElementById('cartAmount').textContent = inr(totalVal);
+    cartBar.classList.add('active');
+  }
+
+  // Handle Cart Interactions
+  document.getElementById('catalogListing').addEventListener('click', e => {
+    const btn = e.target.closest('.counter-btn');
+    if(!btn) return;
+    const id = btn.dataset.id;
+    const act = btn.dataset.action;
+    const current = cart[id] || 0;
+    if(act === 'add') cart[id] = current + 1;
+    if(act === 'sub') cart[id] = Math.max(0, current - 1);
+    
+    document.getElementById('qty-' + id).textContent = cart[id];
+    updateCartStatus();
+  });
+
+  document.getElementById('confirmSaleBtn').addEventListener('click', () => {
+    const keys = Object.keys(cart).filter(k => cart[k] > 0);
+    if(!keys.length) return;
+
+    let totalSale = 0, totalCost = 0;
+    const itemsPurchased = [];
+
+    keys.forEach(k => {
+      const dish = menu.find(m => m.id === k);
+      if(dish) {
+        const q = cart[k];
+        const c = getDishCost(dish);
+        totalSale += dish.price * q;
+        totalCost += c * q;
+        itemsPurchased.push({ name: dish.name, qty: q, price: dish.price, cost: c });
+      }
+    });
+
+    const totalProfit = totalSale - totalCost;
+    const custName = document.getElementById('orderCustName').value.trim();
+    const custPhone = document.getElementById('orderCustPhone').value.trim().replace(/[^0-9]/g, '');
+    const custNotes = document.getElementById('orderCustNotes').value.trim();
+
+    const txn = {
+      id: 'tx_' + Date.now(),
+      date: Date.now(),
+      items: itemsPurchased,
+      totalSale,
+      totalCost,
+      totalProfit,
+      custName,
+      custPhone,
+      custNotes
+    };
+
+    transactions.unshift(txn);
+    commitTxns();
+
+    // Reset Form
+    cart = {};
+    document.getElementById('orderCustName').value = '';
+    document.getElementById('orderCustPhone').value = '';
+    document.getElementById('orderCustNotes').value = '';
+
+    sync();
+    notify('Sale saved! Profit: ' + inr(totalProfit));
+  });
+
+  // History & WhatsApp Bill
+  function renderHistory() {
+    const root = document.getElementById('historyListing');
+    root.innerHTML = '';
+
+    if (!transactions.length) {
+      root.innerHTML = `
+        <div style="text-align:center; padding:50px 20px; color:var(--ink-muted);">
+          <h4 class="serif" style="font-size:18px; color:var(--ink); margin-bottom:6px;">No Orders Logged Yet</h4>
+          <p style="font-size:13px;">Record today's first delivery from the Log Order tab.</p>
+        </div>`;
+      return;
+    }
+
+    transactions.forEach(t => {
+      const dateStr = new Date(t.date).toLocaleDateString('en-IN', {
+        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+      });
+      const dishesStr = t.items.map(i => `${i.qty}× ${i.name}`).join(', ');
+
+      // Build WhatsApp Bill Link
+      let waLink = '';
+      if(t.custPhone) {
+        let text = `*Invoice from Unnati Cloud Kitchen*\nDate: ${dateStr}\n------------------------\n`;
+        t.items.forEach(it => {
+          text += `${it.qty}x ${it.name} - ₹${it.qty * it.price}\n`;
+        });
+        text += `------------------------\n*Total Amount: ₹${t.totalSale}*\nThank you for ordering with us!`;
+        const encoded = encodeURIComponent(text);
+        const fullNumber = t.custPhone.length === 10 ? '91' + t.custPhone : t.custPhone;
+        waLink = `<a href="https://wa.me/${fullNumber}?text=${encoded}" target="_blank" class="whatsapp-link">WhatsApp Bill</a>`;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'order-card';
+      card.innerHTML = `
+        <div class="order-card-header">
+          <div>
+            <div class="order-stamp">${dateStr}</div>
+            <div class="order-cust-info">${t.custName || 'Walk-in / Direct Order'}${t.custNotes ? ' · ' + t.custNotes : ''}</div>
+          </div>
+          <button class="del-btn" data-id="${t.id}">Delete</button>
+        </div>
+        <div class="order-items-list">${dishesStr}</div>
+        <div class="order-card-footer">
+          <div class="order-financials">
+            <span class="rev-tag">Billed: <b>${inr(t.totalSale)}</b></span>
+            <span class="profit-tag">+${inr(t.totalProfit)} profit</span>
+          </div>
+          <div class="actions-row">
+            ${waLink}
+          </div>
+        </div>
+      `;
+      root.appendChild(card);
+    });
+  }
+
+  document.getElementById('historyListing').addEventListener('click', e => {
+    const delBtn = e.target.closest('.del-btn');
+    if(delBtn) {
+      if(confirm("Remove this order record? Total profit will recalculate.")) {
+        transactions = transactions.filter(t => t.id !== delBtn.dataset.id);
+        commitTxns();
+        sync();
+      }
+    }
+  });
+
+  // Management & Granular Breakdown
+  function renderManagement() {
+    const root = document.getElementById('managementListing');
+    root.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+      const items = menu.filter(m => m.cat === cat);
+      if(!items.length) return;
+
+      const title = document.createElement('h3');
+      title.className = 'category-heading serif';
+      title.textContent = cat;
+      root.appendChild(title);
+
+      items.forEach(dish => {
+        const cost = getDishCost(dish);
+        const margin = dish.price - cost;
+        const marginPct = dish.price ? Math.round((margin / dish.price) * 100) : 0;
+
+        const card = document.createElement('div');
+        card.className = 'manage-item-card';
+        card.innerHTML = `
+          <div class="manage-head">
+            <span class="manage-title">${dish.name}</span>
+            <button class="delete-item-link" data-id="${dish.id}">Remove Dish</button>
+          </div>
+          <div class="price-strip">
+            <div>
+              <div class="input-label">Selling Price</div>
+              <div class="input-field-box">
+                <span>₹</span>
+                <input type="number" data-dish="${dish.id}" data-type="price" value="${dish.price}">
+              </div>
+            </div>
+            <div>
+              <div class="input-label">Calculated Cost</div>
+              <div class="input-field-box" style="background:var(--surface-subtle);">
+                <span>₹</span>
+                <input type="text" readonly value="${cost}" style="color:var(--ink-muted);">
+              </div>
+            </div>
+          </div>
+          <div style="font-size:12px; font-weight:700; color:var(--success); margin-bottom:8px;">
+            Profit ₹${margin} per serving (${marginPct}% net margin)
+          </div>
+
+          <div class="breakdown-drawer">
+            <div class="breakdown-drawer-title">
+              <span>Itemized Cost Drilldown</span>
+              <span>₹${cost}</span>
+            </div>
+            <div id="cost-entries-${dish.id}">
+              ${(dish.costItems || []).map(ci => `
+                <div class="drilldown-entry" data-cid="${ci.id}">
+                  <input type="text" class="entry-name" data-dish="${dish.id}" data-cid="${ci.id}" value="${ci.label}">
+                  <div class="entry-amt-wrap">
+                    <span>₹</span>
+                    <input type="number" class="entry-amt" data-dish="${dish.id}" data-cid="${ci.id}" value="${ci.amount}">
+                  </div>
+                  <button class="entry-del" data-dish="${dish.id}" data-cid="${ci.id}">✕</button>
+                </div>
+              `).join('')}
+            </div>
+            <button class="add-cost-btn" data-dish="${dish.id}">+ Add Component (Ingredient, Bag, Gas)</button>
+          </div>
+        `;
+        root.appendChild(card);
+      });
+    });
+  }
+
+  // Manage interactions
+  document.getElementById('managementListing').addEventListener('input', e => {
+    const dishId = e.target.dataset.dish;
+    if(!dishId) return;
+    const dish = menu.find(m => m.id === dishId);
+    if(!dish) return;
+
+    if(e.target.dataset.type === 'price') {
+      dish.price = parseFloat(e.target.value) || 0;
+      commitMenu();
+      refreshDashboard();
+      renderCatalog();
+    } else if(e.target.classList.contains('entry-name')) {
+      const cid = e.target.dataset.cid;
+      const c = dish.costItems.find(x => x.id === cid);
+      if(c) { c.label = e.target.value; commitMenu(); }
+    } else if(e.target.classList.contains('entry-amt')) {
+      const cid = e.target.dataset.cid;
+      const c = dish.costItems.find(x => x.id === cid);
+      if(c) {
+        c.amount = parseFloat(e.target.value) || 0;
+        commitMenu();
+        refreshDashboard();
+        renderCatalog();
+      }
+    }
+  });
+
+  document.getElementById('managementListing').addEventListener('click', e => {
+    const dishId = e.target.dataset.dish;
+    const dish = menu.find(m => m.id === dishId);
+
+    // Delete component
+    if(e.target.classList.contains('entry-del')) {
+      const cid = e.target.dataset.cid;
+      dish.costItems = dish.costItems.filter(x => x.id !== cid);
+      commitMenu();
+      sync();
+      return;
+    }
+
+    // Add cost row
+    if(e.target.classList.contains('add-cost-btn')) {
+      dish.costItems.push(cItem("New Cost Component", 5));
+      commitMenu();
+      sync();
+      return;
+    }
+
+    // Delete Entire Dish
+    if(e.target.classList.contains('delete-item-link')) {
+      const id = e.target.dataset.id;
+      if(confirm("Remove this entire dish from your kitchen menu?")) {
+        menu = menu.filter(m => m.id !== id);
+        delete cart[id];
+        commitMenu();
+        sync();
+      }
+    }
+  });
+
+  // Add New Dish
+  document.getElementById('addDishBtn').addEventListener('click', () => {
+    const cat = document.getElementById('newDishCat').value;
+    const name = document.getElementById('newDishName').value.trim();
+    const price = parseFloat(document.getElementById('newDishPrice').value);
+    const baseCost = parseFloat(document.getElementById('newDishBaseCost').value) || 0;
+
+    if(!name || isNaN(price)) {
+      notify("Please enter dish name and selling price");
+      return;
+    }
+
+    menu.push({
+      id: "dish_" + Date.now(),
+      cat,
+      name,
+      price,
+      costItems: [
+        cItem("Raw Food & Ingredients", baseCost * 0.7),
+        cItem("Containers & Packaging", baseCost * 0.2),
+        cItem("Fuel / Gas Allocation", baseCost * 0.1)
+      ]
+    });
+
+    commitMenu();
+    document.getElementById('newDishName').value = '';
+    document.getElementById('newDishPrice').value = '';
+    document.getElementById('newDishBaseCost').value = '';
+    sync();
+    notify("Dish added with automatic cost drilldown!");
+  });
+
+  // Export CSV
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    if(!transactions.length) {
+      notify("No transactions to export yet.");
+      return;
+    }
+    let csv = "Txn ID,Date,Time,Customer,Phone,Dishes,Total Revenue,Total Cost,Net Profit\n";
+    transactions.forEach(t => {
+      const d = new Date(t.date);
+      const dateStr = d.toLocaleDateString('en-IN');
+      const timeStr = d.toLocaleTimeString('en-IN');
+      const itemsStr = t.items.map(i => `${i.qty}x ${i.name}`).join(' | ');
+      csv += `"${t.id}","${dateStr}","${timeStr}","${t.custName||''}","${t.custPhone||''}","${itemsStr}",${t.totalSale},${t.totalCost},${t.totalProfit}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Unnati_Munafa_Report_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Tab Navigation
+  document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+      document.getElementById('view-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  loadStorage();
+})();
+</script>
+</body>
+</html>
