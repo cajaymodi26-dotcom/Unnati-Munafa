@@ -10,9 +10,7 @@
 <meta name="theme-color" content="#1F1512">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Caveat:wght@700&display=swap" rel="stylesheet">
-<!-- Client-side HTML-to-Image renderer -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F8F5F0;
@@ -338,7 +336,7 @@
     cursor: pointer;
   }
 
-  /* Management & Drilldown */
+  /* Management & Menu Sharing Card */
   .menu-share-banner {
     background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E6 100%);
     border: 1.5px solid var(--accent);
@@ -361,6 +359,26 @@
     margin-bottom: 14px;
     line-height: 1.4;
   }
+  
+  /* Live Flyer Preview Box */
+  .flyer-preview-box {
+    background: #FFF;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .flyer-preview-img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
   .share-btn-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -378,10 +396,11 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
+    text-decoration: none;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
   .share-btn-wa { background: #25D366; color: #FFF; }
-  .share-btn-img { background: #0E5C39; color: #FFF; }
+  .share-btn-dl { background: #0E5C39; color: #FFF; }
 
   .manage-item-card {
     background: var(--surface);
@@ -549,284 +568,6 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
   .toast-banner.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-  /* =========================================================
-     EXACT UNNATI FLYER CANVAS (DESIGN MATCH)
-     ========================================================= */
-  #flyerCaptureWrapper {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    width: 800px; /* High-res target dimension */
-  }
-
-  .flyer-card {
-    width: 800px;
-    background: #FFFDF8;
-    background-image: radial-gradient(#F5EDE0 1px, transparent 1px);
-    background-size: 18px 18px;
-    padding: 24px 28px 20px;
-    border: 5px solid #0D5030;
-    border-radius: 20px;
-    position: relative;
-    box-sizing: border-box;
-    color: #1A1A1A;
-  }
-
-  .flyer-top-decor {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
-  .flyer-script-callout {
-    font-family: 'Caveat', cursive;
-    font-size: 26px;
-    line-height: 1.1;
-    color: #382417;
-    text-align: center;
-    transform: rotate(-5deg);
-  }
-  .flyer-cloche-icon {
-    text-align: center;
-    font-size: 32px;
-    line-height: 1;
-    color: #0E5C39;
-    margin-bottom: 2px;
-  }
-  .flyer-main-brand {
-    text-align: center;
-    flex: 1;
-  }
-  .flyer-brand-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 58px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    color: #0D472B;
-    line-height: 0.95;
-  }
-  .flyer-brand-sub {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    color: #1A1A1A;
-    text-transform: uppercase;
-    margin-top: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-  .flyer-brand-sub::before, .flyer-brand-sub::after {
-    content: "";
-    width: 40px;
-    height: 2.5px;
-    background: #0D472B;
-  }
-  .flyer-tagline {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 19px;
-    color: #8C2525;
-    font-weight: 700;
-    margin-top: 6px;
-    text-align: center;
-  }
-  .flyer-stamp-badge {
-    width: 100px;
-    height: 100px;
-    background: #0D5030;
-    color: #FFF;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 3px dashed #FFF;
-    outline: 3px solid #0D5030;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  }
-  .stamp-leaf { font-size: 18px; margin-bottom: -2px; }
-  .stamp-text { font-size: 13px; font-weight: 800; line-height: 1.15; text-transform: uppercase; }
-
-  /* Sections */
-  .flyer-section { margin-top: 14px; }
-  .flyer-sec-bar {
-    display: flex;
-    align-items: center;
-    border-radius: 12px;
-    padding: 3px 6px;
-    margin-bottom: 8px;
-  }
-  .bar-green { background: #0E5C39; color: #FFF; }
-  .bar-maroon { background: #7A2828; color: #FFF; }
-  .bar-orange { background: #D67A18; color: #FFF; }
-
-  .flyer-sec-title {
-    font-size: 20px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 3px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .flyer-time-badge {
-    margin-left: auto;
-    background: #FFF;
-    color: #1A1A1A;
-    font-size: 13px;
-    font-weight: 800;
-    padding: 3px 14px;
-    border-radius: 20px;
-    border: 1.5px solid #000;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .flyer-grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-  .flyer-grid-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-
-  .flyer-plate-card {
-    background: #FFF;
-    border: 1.5px solid #E6D8C5;
-    border-radius: 14px;
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-  }
-  .plate-img-frame {
-    width: 100%;
-    height: 125px;
-    border-radius: 10px;
-    object-fit: cover;
-    margin-bottom: 8px;
-    border: 1px solid #DDD;
-  }
-  .plate-name {
-    font-size: 15px;
-    font-weight: 800;
-    color: #1A1A1A;
-    line-height: 1.2;
-  }
-  .plate-desc {
-    font-size: 11px;
-    color: #666;
-    margin: 3px 0 6px;
-    font-weight: 600;
-  }
-  .plate-price-pill {
-    background: #0E5C39;
-    color: #FFF;
-    font-size: 18px;
-    font-weight: 900;
-    padding: 3px 20px;
-    border-radius: 20px;
-    margin-top: auto;
-    display: inline-block;
-  }
-
-  .bottom-split-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-top: 14px;
-  }
-  .bottom-box {
-    background: #FFF;
-    border: 1.5px solid #E6D8C5;
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .bottom-box-head {
-    padding: 5px 12px;
-    font-weight: 900;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #FFF;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .bottom-box-body {
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-  }
-  .bottom-box-img {
-    width: 80px;
-    height: 70px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  .bottom-items-list {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .bottom-item-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12.5px;
-    font-weight: 700;
-  }
-  .bottom-item-line .name { display: flex; align-items: center; gap: 4px; }
-  .bottom-item-line .price {
-    background: #0E5C39;
-    color: #FFF;
-    padding: 2px 7px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 900;
-  }
-
-  /* Footer */
-  .flyer-footer {
-    background: #0D5030;
-    color: #FFF;
-    border-radius: 14px;
-    padding: 10px 16px;
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .flyer-footer-col { display: flex; align-items: center; gap: 8px; }
-  .footer-call-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.85; }
-  .footer-phone { font-size: 24px; font-weight: 900; letter-spacing: 0.5px; }
-  .footer-loc { font-size: 15px; font-weight: 700; line-height: 1.2; }
-  .footer-preorder { font-size: 12px; font-style: italic; font-weight: 600; text-align: right; }
-  
-  .flyer-veg-ribbon {
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: #0D472B;
-    margin-top: 6px;
-  }
 </style>
 </head>
 <body>
@@ -894,15 +635,20 @@
   <div class="view-container" id="view-menu">
     <!-- WhatsApp Menu Card Generator Banner -->
     <div class="menu-share-banner">
-      <div class="share-banner-title">🌟 Unnati Menu Card Generator</div>
-      <div class="share-banner-desc">Create and download an image flyer matching your kitchen branding to share on WhatsApp or post as a Status.</div>
+      <div class="share-banner-title">🌟 Official Customer Menu Flyer</div>
+      <div class="share-banner-desc">Download or share your exact branded menu card directly with customers on WhatsApp:</div>
+      
+      <div class="flyer-preview-box">
+        <img src="menu-card.jpeg" alt="Unnati Cloud Kitchen Menu Card" class="flyer-preview-img" onerror="this.src='https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500&auto=format&fit=crop&q=60';">
+      </div>
+
       <div class="share-btn-row">
         <button class="share-btn share-btn-wa" id="shareMenuWhatsAppBtn">
-          Share Text on WhatsApp
+          Share on WhatsApp
         </button>
-        <button class="share-btn share-btn-img" id="downloadMenuImgBtn">
-          Save Menu Card as Image
-        </button>
+        <a href="menu-card.jpeg" download="Unnati_Cloud_Kitchen_Menu.jpeg" class="share-btn share-btn-dl" id="downloadMenuImgBtn">
+          Download Menu Card
+        </a>
       </div>
     </div>
 
@@ -929,7 +675,7 @@
     </div>
   </div>
 
-  <!-- Cart Float Bar -->
+  <!-- Cart Bottom Bar -->
   <div class="float-cart" id="cartBar">
     <div>
       <div class="cart-meta-qty" id="cartQty">0 items</div>
@@ -939,177 +685,6 @@
   </div>
 
   <div class="toast-banner" id="toastMsg"></div>
-
-  <!-- =========================================================
-       FLYER TEMPLATE MATCHING YOUR FLYER DESIGN
-       ========================================================= -->
-  <div id="flyerCaptureWrapper">
-    <div class="flyer-card" id="flyerCardNode">
-      
-      <!-- Top Branding -->
-      <div class="flyer-top-decor">
-        <div class="flyer-script-callout">
-          Good<br>Food<br>Brings<br>Happiness
-        </div>
-
-        <div class="flyer-main-brand">
-          <div class="flyer-cloche-icon">🍽️</div>
-          <h1 class="flyer-brand-title">UNNATI</h1>
-          <div class="flyer-brand-sub">Cloud Kitchen</div>
-          <div class="flyer-tagline">Fresh, Pure & Hygienic Home-Cooked Food</div>
-        </div>
-
-        <div class="flyer-stamp-badge">
-          <div class="stamp-leaf">🌿</div>
-          <div class="stamp-text">No Onion<br>No Garlic</div>
-        </div>
-      </div>
-
-      <!-- LUNCH SECTION -->
-      <div class="flyer-section">
-        <div class="flyer-sec-bar bar-green">
-          <div class="flyer-sec-title">🍲 Lunch</div>
-          <div class="flyer-time-badge">🕒 11 AM to 2 PM</div>
-        </div>
-        <div class="flyer-grid-3">
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="Full Thali">
-            <div class="plate-name">Full Thali</div>
-            <div class="plate-desc">(3 Roti, 2 Sabji, Rice, Dal, Papad)</div>
-            <div class="plate-price-pill">₹249</div>
-          </div>
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="Mini Thali Roti">
-            <div class="plate-name">Mini Thali</div>
-            <div class="plate-desc">(4 Roti, 1 Sabji)</div>
-            <div class="plate-price-pill">₹149</div>
-          </div>
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="Mini Thali Rice">
-            <div class="plate-name">Mini Thali</div>
-            <div class="plate-desc">(Rice, Dal, 1 Sabji, Papad)</div>
-            <div class="plate-price-pill">₹149</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- DINNER SECTION -->
-      <div class="flyer-section">
-        <div class="flyer-sec-bar bar-maroon">
-          <div class="flyer-sec-title">🍴 Dinner</div>
-          <div class="flyer-time-badge">🕒 6 PM to 8 PM</div>
-        </div>
-        <div class="flyer-grid-3">
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="3 Tawa Paratha">
-            <div class="plate-name">3 Tawa Paratha with 1 Sabji</div>
-            <div class="plate-desc">(Served hot & fresh)</div>
-            <div class="plate-price-pill">₹149</div>
-          </div>
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1626074353765-517a681e40be?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="Aloo Paratha">
-            <div class="plate-name">Aloo Paratha (2pc) with Fresh Curd</div>
-            <div class="plate-desc">(Pure desi tawa fried)</div>
-            <div class="plate-price-pill">₹149</div>
-          </div>
-          <div class="flyer-plate-card">
-            <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&auto=format&fit=crop&q=60" class="plate-img-frame" alt="Paneer Paratha">
-            <div class="plate-name">Paneer Paratha (2pc) with Chutney</div>
-            <div class="plate-desc">(Fresh malai paneer stuffed)</div>
-            <div class="plate-price-pill">₹199</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SUNDAY SPECIAL -->
-      <div class="flyer-section">
-        <div class="flyer-sec-bar bar-orange">
-          <div class="flyer-sec-title">☀️ Sunday Special Breakfast</div>
-          <div class="flyer-time-badge">🕒 8 AM to 10 AM</div>
-        </div>
-        <div class="flyer-grid-2">
-          <div class="flyer-plate-card" style="flex-direction:row; gap:12px; text-align:left; padding:8px 12px;">
-            <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=500&auto=format&fit=crop&q=60" style="width:110px; height:80px; margin:0;" class="plate-img-frame" alt="Puri Aloo">
-            <div>
-              <div class="plate-name">4 Puri with Bedmi Aloo Sabji</div>
-              <div class="plate-desc">Authentic Halwai Recipe</div>
-              <div class="plate-price-pill">₹119</div>
-            </div>
-          </div>
-          <div class="flyer-plate-card" style="flex-direction:row; gap:12px; text-align:left; padding:8px 12px;">
-            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&auto=format&fit=crop&q=60" style="width:110px; height:80px; margin:0;" class="plate-img-frame" alt="Puri Chole">
-            <div>
-              <div class="plate-name">4 Puri with Amritsari Chole</div>
-              <div class="plate-desc">Rich spiced chickpeas</div>
-              <div class="plate-price-pill">₹149</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ADD-ONS & BEVERAGES -->
-      <div class="bottom-split-row">
-        <div class="bottom-box">
-          <div class="bottom-box-head bar-green">➕ Add-Ons</div>
-          <div class="bottom-box-body">
-            <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=500&auto=format&fit=crop&q=60" class="bottom-box-img" alt="Rotis">
-            <div class="bottom-items-list">
-              <div class="bottom-item-line">
-                <span class="name">• Plain Phulka Roti</span>
-                <span class="price">₹25</span>
-              </div>
-              <div class="bottom-item-line">
-                <span class="name">• Desi Ghee Phulka Roti</span>
-                <span class="price">₹30</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bottom-box">
-          <div class="bottom-box-head bar-maroon">☕ Beverages</div>
-          <div class="bottom-box-body">
-            <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&auto=format&fit=crop&q=60" class="bottom-box-img" alt="Tea">
-            <div class="bottom-items-list">
-              <div class="bottom-item-line">
-                <span class="name">• Adrak Wali Chai (2 Serv.)</span>
-                <span class="price">₹79</span>
-              </div>
-              <div class="bottom-item-line">
-                <span class="name">• Spiced Buttermilk (300ml)</span>
-                <span class="price">₹59</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Bar -->
-      <div class="flyer-footer">
-        <div class="flyer-footer-col">
-          <span style="font-size:32px;">📞</span>
-          <div>
-            <div class="footer-call-tag">Call / WhatsApp</div>
-            <div class="footer-phone">9363719256</div>
-          </div>
-        </div>
-
-        <div class="flyer-footer-col">
-          <span style="font-size:30px;">📍</span>
-          <div>
-            <div class="footer-loc">Jayendra Colony<br>Perungudi, Chennai</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="footer-preorder">Please place orders<br>in advance via<br>message or call!</div>
-        </div>
-      </div>
-
-      <div class="flyer-veg-ribbon">🌿 100% Pure Vegetarian 🌿</div>
-
-    </div>
-  </div>
 
 <script>
 (function(){
@@ -1682,7 +1257,7 @@
     notify("Dish added with automatic cost drilldown!");
   });
 
-  // Feature 1: Share Text on WhatsApp
+  // Feature: Share Text on WhatsApp
   document.getElementById('shareMenuWhatsAppBtn').addEventListener('click', () => {
     if(!menu.length) {
       notify("No items in menu.");
@@ -1703,31 +1278,6 @@
     window.open(waUrl, '_blank');
   });
 
-  // Feature 2: Generate and Download High-Res Flyer Image (JPEG)
-  document.getElementById('downloadMenuImgBtn').addEventListener('click', async () => {
-    notify("Creating your menu card image...");
-    const flyerNode = document.getElementById('flyerCardNode');
-
-    try {
-      const canvas = await html2canvas(flyerNode, {
-        scale: 2, // 2x retina clarity for crisp text
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#FFFDF8'
-      });
-
-      const imageURL = canvas.toDataURL('image/jpeg', 0.95);
-      const dlLink = document.createElement('a');
-      dlLink.download = 'Unnati_Cloud_Kitchen_Menu.jpg';
-      dlLink.href = imageURL;
-      dlLink.click();
-      notify("Menu Card downloaded to your gallery!");
-    } catch(err) {
-      notify("Error rendering image. Please retry.");
-      console.error(err);
-    }
-  });
-
   // Export CSV
   document.getElementById('exportCsvBtn').addEventListener('click', () => {
     if(!transactions.length) {
@@ -1743,7 +1293,7 @@
       csv += `"${t.id}","${dateStr}","${timeStr}","${t.custName||''}","${t.custPhone||''}","${itemsStr}",${t.totalSale},${t.totalCost},${t.totalProfit}\n`;
     });
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf5;' });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
