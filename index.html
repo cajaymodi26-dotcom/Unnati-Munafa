@@ -165,7 +165,7 @@
   .view-container { display: none; padding: 0 14px; }
   .view-container.active { display: block; }
 
-  /* Customer Panel */
+  /* Customer & Order Panel */
   .customer-panel {
     background: var(--surface);
     border-radius: var(--radius-md);
@@ -185,7 +185,20 @@
     justify-content: space-between;
   }
   .cust-input-grid { display: flex; flex-direction: column; gap: 8px; }
-  .cust-input-grid input {
+  .date-picker-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .date-field-wrap label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .cust-input-grid input, .date-field-wrap input, .date-field-wrap select {
     width: 100%;
     border: 1px solid var(--line);
     background: var(--bg);
@@ -283,7 +296,68 @@
     cursor: pointer;
   }
 
-  /* History */
+  /* History Multi-Level Analytics Cards */
+  .history-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .summary-card-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-card-box.highlight {
+    background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E6 100%);
+    border-color: var(--accent);
+  }
+  .summary-card-box p {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .summary-card-box h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-top: 3px;
+  }
+  .summary-card-box h3.profit-text {
+    color: var(--success);
+  }
+  .summary-card-box span {
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  .month-filter-wrap {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .month-filter-wrap select {
+    flex: 1;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    outline: none;
+  }
+
   .order-card {
     background: var(--surface);
     border: 1px solid var(--line);
@@ -360,7 +434,6 @@
     line-height: 1.4;
   }
   
-  /* Live Flyer Preview Box */
   .flyer-preview-box {
     background: #FFF;
     border: 1px solid var(--line);
@@ -583,7 +656,7 @@
     </div>
 
     <div class="profit-display">
-      <div class="profit-label">NET PROFIT EARNED</div>
+      <div class="profit-label">ALL-TIME CUMULATIVE PROFIT</div>
       <div class="profit-val">
         <span id="heroProfit">₹0</span>
         <span class="profit-margin-badge" id="heroMarginPct">0% margin</span>
@@ -605,7 +678,7 @@
   <!-- Tabs -->
   <div class="nav-tabs">
     <button class="tab-item active" data-tab="order">Log Order</button>
-    <button class="tab-item" data-tab="history">History</button>
+    <button class="tab-item" data-tab="history">History & Profits</button>
     <button class="tab-item" data-tab="menu">Menu & Costs</button>
   </div>
 
@@ -613,11 +686,26 @@
   <div class="view-container active" id="view-order">
     <div class="customer-panel">
       <div class="cust-title">
-        <span>Order Metadata</span>
-        <span style="font-size:11px; text-transform:none; font-weight:500;">(Optional)</span>
+        <span>Order Date & Customer Directory</span>
+        <span style="font-size:11px; text-transform:none; font-weight:600; color:var(--success);">● Auto-Contact Pop-in Active</span>
       </div>
       <div class="cust-input-grid">
-        <input type="text" id="orderCustName" placeholder="Customer Name (e.g. Ramesh Bhai)">
+        <div class="date-picker-row">
+          <div class="date-field-wrap">
+            <label>Order Date</label>
+            <input type="date" id="orderDateInput">
+          </div>
+          <div class="date-field-wrap">
+            <label>Order Time</label>
+            <input type="time" id="orderTimeInput">
+          </div>
+        </div>
+
+        <div>
+          <input type="text" id="orderCustName" list="customerDirectoryList" placeholder="Customer Name (e.g. Ramesh Bhai)">
+          <datalist id="customerDirectoryList"></datalist>
+        </div>
+        
         <input type="tel" id="orderCustPhone" placeholder="10-digit WhatsApp No. (e.g. 9876543210)">
         <input type="text" id="orderCustNotes" placeholder="Delivery address / special instructions">
       </div>
@@ -626,14 +714,46 @@
     <div id="catalogListing"></div>
   </div>
 
-  <!-- View 2: History -->
+  <!-- View 2: History & Profits -->
   <div class="view-container" id="view-history">
+    <!-- Month Picker Drilldown -->
+    <div class="month-filter-wrap">
+      <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--ink-muted); white-space:nowrap;">Select Month:</label>
+      <select id="historyMonthSelect"></select>
+    </div>
+
+    <!-- Monthly & Cumulative Metrics -->
+    <div class="history-summary-grid">
+      <div class="summary-card-box highlight">
+        <p id="selectedMonthTitle">This Month's Profit</p>
+        <h3 class="profit-text" id="monthProfit">₹0</h3>
+        <span id="monthRevSub">Revenue: ₹0</span>
+      </div>
+      <div class="summary-card-box">
+        <p id="selectedYearTitle">Year-to-Date (YTD)</p>
+        <h3 class="profit-text" id="ytdProfit">₹0</h3>
+        <span id="ytdRevSub">Revenue: ₹0</span>
+      </div>
+    </div>
+
+    <div class="history-summary-grid" style="margin-top:-4px;">
+      <div class="summary-card-box">
+        <p>Monthly Orders</p>
+        <h3 id="monthOrdersCount">0</h3>
+        <span>delivered</span>
+      </div>
+      <div class="summary-card-box">
+        <p>All-Time Cumulative</p>
+        <h3 class="profit-text" id="allTimeProfitSummary">₹0</h3>
+        <span id="allTimeRevSub">Total Profit</span>
+      </div>
+    </div>
+
     <div id="historyListing"></div>
   </div>
 
   <!-- View 3: Menu & Real Costs -->
   <div class="view-container" id="view-menu">
-    <!-- WhatsApp Menu Card Generator Banner -->
     <div class="menu-share-banner">
       <div class="share-banner-title">🌟 Official Customer Menu Flyer</div>
       <div class="share-banner-desc">Download or share your exact branded menu card directly with customers on WhatsApp:</div>
@@ -653,7 +773,7 @@
     </div>
 
     <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px; line-height:1.5;">
-      Each dish is broken down into realistic ingredients, multi-compartment packaging, and utility expenses. Edit any individual cost to reflect current market rates.
+      Each dish & beverage is broken down into realistic ingredients, multi-compartment packaging/cups, and utility expenses. Edit any individual cost to reflect current market rates.
     </p>
     <div id="managementListing"></div>
 
@@ -694,7 +814,24 @@
     return { id: 'c_' + Math.random().toString(36).substr(2, 7), label, amount: parseFloat(amount)||0 };
   }
 
+  // Master Initial Menu with Revised Beverage Pricing (v4.0)
   const INITIAL_MENU = [
+    {
+      id: "thali-special-jaljeera",
+      cat: "Lunch",
+      name: "Special Thali (3 Chapati, Aloo Sabji, Mix Veg, Dal, Rice, Pappad + Lemon Jaljeera)",
+      price: 249,
+      costItems: [
+        cItem("3 Piece Chapati (Atta & Oil/Ghee)", 11),
+        cItem("Aloo Sabji Portion", 9),
+        cItem("Mix Veg Portion", 14),
+        cItem("Dal Tadka & Steamed Rice", 13),
+        cItem("Pappad, Pickle & Salad", 4),
+        cItem("Welcome Drink (Lemon Jaljeera 200ml)", 6),
+        cItem("Packaging (5-CP Tray, Drink Glass, Bag)", 17),
+        cItem("LPG Gas, Water & Consumables", 8)
+      ]
+    },
     {
       id: "thali-full",
       cat: "Lunch",
@@ -828,6 +965,79 @@
         cItem("LPG Burn", 2)
       ]
     },
+    // REVISED BEVERAGES PRICING
+    {
+      id: "bev-refreshing-lemonade",
+      cat: "Beverages",
+      name: "Refreshing Lemonade",
+      price: 30,
+      costItems: [
+        cItem("Fresh Lemon (1.5 pcs)", 5.0),
+        cItem("Sugar Syrup & Black Salt", 2.5),
+        cItem("Mint Leaves & RO Chilled Water", 1.5),
+        cItem("Sealed Glass Container & Straw", 4.0)
+      ]
+    },
+    {
+      id: "bev-sabja-lemonade",
+      cat: "Beverages",
+      name: "Sabja Lemonade",
+      price: 35,
+      costItems: [
+        cItem("Fresh Lemon Juice", 5.0),
+        cItem("Organic Soaked Sabja Seeds (Basil)", 4.0),
+        cItem("Sugar Syrup, Spices & RO Water", 2.5),
+        cItem("Sealed Glass Bottle & Straw", 4.5)
+      ]
+    },
+    {
+      id: "bev-blue-lagoon",
+      cat: "Beverages",
+      name: "Blue Lagoon Mocktail",
+      price: 40,
+      costItems: [
+        cItem("Blue Curacao Syrup (30ml)", 8.0),
+        cItem("Lemon Juice & Mint Leaves", 4.0),
+        cItem("Chilled Club Soda / RO Base", 5.0),
+        cItem("Spill-Proof Mocktail Cup & Straw", 5.0)
+      ]
+    },
+    {
+      id: "bev-rose-milk",
+      cat: "Beverages",
+      name: "Rose Milk",
+      price: 40,
+      costItems: [
+        cItem("Full Cream Pure Milk (200ml)", 13.0),
+        cItem("Gulab (Rose) Syrup & Essence", 5.0),
+        cItem("Sabja Seeds (optional garnish)", 2.0),
+        cItem("Chilled Bottle & Straw", 4.0)
+      ]
+    },
+    {
+      id: "bev-butter-milk",
+      cat: "Beverages",
+      name: "Butter Milk (Chaas)",
+      price: 40,
+      costItems: [
+        cItem("Fresh Curd (Dahi) Portion", 8.0),
+        cItem("Roasted Jeera, Black Salt & Hing", 2.5),
+        cItem("Fresh Green Coriander & Ginger", 1.5),
+        cItem("Sealed Pouch / Glass Bottle", 4.0)
+      ]
+    },
+    {
+      id: "bev-rooh-afza",
+      cat: "Beverages",
+      name: "Rooh Afza Sharbat",
+      price: 35, // Updated to Rs 35
+      costItems: [
+        cItem("Authentic Rooh Afza Syrup (35ml)", 7.0),
+        cItem("Chilled Milk / Lemon Water Base", 8.0),
+        cItem("Soaked Sabja / Ice RO", 2.0),
+        cItem("Airtight Beverage Bottle", 4.0)
+      ]
+    },
     {
       id: "tea-ginger",
       cat: "Beverages",
@@ -840,23 +1050,13 @@
         cItem("2 Small Paper Cups", 2.5),
         cItem("Boiling LPG", 4)
       ]
-    },
-    {
-      id: "masala-chaas",
-      cat: "Beverages",
-      name: "Spiced Masala Buttermilk (300ml)",
-      price: 59,
-      costItems: [
-        cItem("Curd, Black Salt, Jeera, Coriander", 10),
-        cItem("Chilled Bottling Container / Sealed Glass", 6),
-        cItem("RO Ice & Preparation", 2)
-      ]
     }
   ];
 
   let menu = [];
   let transactions = [];
   let cart = {};
+  let customerDirectory = {};
 
   const inr = n => "₹" + Math.round(n).toLocaleString('en-IN');
   const getDishCost = dish => (dish.costItems || []).reduce((acc, cur) => acc + (parseFloat(cur.amount) || 0), 0);
@@ -868,26 +1068,62 @@
     setTimeout(() => el.classList.remove('visible'), 1800);
   }
 
+  function getMonthKey(timestamp) {
+    const d = new Date(timestamp);
+    const yr = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, '0');
+    return `${yr}-${mo}`;
+  }
+
+  function getMonthDisplay(monthKey) {
+    const [year, month] = monthKey.split('-');
+    const d = new Date(parseInt(year), parseInt(month) - 1, 1);
+    return d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+  }
+
   function loadStorage() {
     try {
-      const m = localStorage.getItem('um_menu');
+      const m = localStorage.getItem('um_menu_v5');
       menu = m ? JSON.parse(m) : INITIAL_MENU;
       const t = localStorage.getItem('um_txns');
       transactions = t ? JSON.parse(t) : [];
+      const cd = localStorage.getItem('um_customers');
+      customerDirectory = cd ? JSON.parse(cd) : {};
     } catch(e) {
       menu = INITIAL_MENU;
       transactions = [];
+      customerDirectory = {};
     }
+
+    const now = new Date();
+    document.getElementById('orderDateInput').value = now.toISOString().slice(0, 10);
+    document.getElementById('orderTimeInput').value = now.toTimeString().slice(0, 5);
+
+    populateCustomerDatalist();
     sync();
   }
 
-  function commitMenu() {
-    localStorage.setItem('um_menu', JSON.stringify(menu));
+  function commitMenu() { localStorage.setItem('um_menu_v5', JSON.stringify(menu)); }
+  function commitTxns() { localStorage.setItem('um_txns', JSON.stringify(transactions)); }
+  function commitCustomers() { localStorage.setItem('um_customers', JSON.stringify(customerDirectory)); }
+
+  function populateCustomerDatalist() {
+    const dl = document.getElementById('customerDirectoryList');
+    dl.innerHTML = '';
+    Object.keys(customerDirectory).forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.label = customerDirectory[name];
+      dl.appendChild(opt);
+    });
   }
 
-  function commitTxns() {
-    localStorage.setItem('um_txns', JSON.stringify(transactions));
-  }
+  document.getElementById('orderCustName').addEventListener('input', (e) => {
+    const val = e.target.value.trim();
+    if(customerDirectory[val]) {
+      document.getElementById('orderCustPhone').value = customerDirectory[val];
+    }
+  });
 
   function sync() {
     refreshDashboard();
@@ -1008,9 +1244,19 @@
     const custPhone = document.getElementById('orderCustPhone').value.trim().replace(/[^0-9]/g, '');
     const custNotes = document.getElementById('orderCustNotes').value.trim();
 
+    if(custName && custPhone) {
+      customerDirectory[custName] = custPhone;
+      commitCustomers();
+      populateCustomerDatalist();
+    }
+
+    const datePart = document.getElementById('orderDateInput').value || new Date().toISOString().slice(0,10);
+    const timePart = document.getElementById('orderTimeInput').value || "12:00";
+    const orderTimestamp = new Date(`${datePart}T${timePart}:00`).getTime() || Date.now();
+
     const txn = {
       id: 'tx_' + Date.now(),
-      date: Date.now(),
+      date: orderTimestamp,
       items: itemsPurchased,
       totalSale,
       totalCost,
@@ -1021,6 +1267,7 @@
     };
 
     transactions.unshift(txn);
+    transactions.sort((a,b) => b.date - a.date);
     commitTxns();
 
     cart = {};
@@ -1034,20 +1281,81 @@
 
   function renderHistory() {
     const root = document.getElementById('historyListing');
+    const monthSelect = document.getElementById('historyMonthSelect');
     root.innerHTML = '';
 
     if (!transactions.length) {
+      document.getElementById('monthProfit').textContent = "₹0";
+      document.getElementById('ytdProfit').textContent = "₹0";
+      document.getElementById('monthOrdersCount').textContent = "0";
+      document.getElementById('allTimeProfitSummary').textContent = "₹0";
+      monthSelect.innerHTML = '<option value="">No transactions logged</option>';
       root.innerHTML = `
         <div style="text-align:center; padding:50px 20px; color:var(--ink-muted);">
           <h4 class="serif" style="font-size:18px; color:var(--ink); margin-bottom:6px;">No Orders Logged Yet</h4>
-          <p style="font-size:13px;">Record today's first delivery from the Log Order tab.</p>
+          <p style="font-size:13px;">Record orders from the Log Order tab.</p>
         </div>`;
       return;
     }
 
+    const monthKeys = [...new Set(transactions.map(t => getMonthKey(t.date)))];
+    const previousSelection = monthSelect.value;
+
+    monthSelect.innerHTML = '';
+    monthKeys.forEach(mKey => {
+      const opt = document.createElement('option');
+      opt.value = mKey;
+      opt.textContent = getMonthDisplay(mKey);
+      monthSelect.appendChild(opt);
+    });
+
+    if(previousSelection && monthKeys.includes(previousSelection)) {
+      monthSelect.value = previousSelection;
+    } else {
+      monthSelect.value = monthKeys[0];
+    }
+
+    const activeMonth = monthSelect.value;
+    const activeYear = activeMonth.split('-')[0];
+
+    let mSale = 0, mProf = 0, mCount = 0;
+    let ytdSale = 0, ytdProf = 0;
+    let allTimeProf = 0;
+
     transactions.forEach(t => {
+      const tMonth = getMonthKey(t.date);
+      const tYear = tMonth.split('-')[0];
+
+      allTimeProf += t.totalProfit;
+
+      if(tYear === activeYear) {
+        ytdSale += t.totalSale;
+        ytdProf += t.totalProfit;
+      }
+
+      if(tMonth === activeMonth) {
+        mSale += t.totalSale;
+        mProf += t.totalProfit;
+        mCount++;
+      }
+    });
+
+    document.getElementById('selectedMonthTitle').textContent = `${getMonthDisplay(activeMonth)} Profit`;
+    document.getElementById('monthProfit').textContent = inr(mProf);
+    document.getElementById('monthRevSub').textContent = `Revenue: ${inr(mSale)}`;
+
+    document.getElementById('selectedYearTitle').textContent = `Year ${activeYear} Till Date`;
+    document.getElementById('ytdProfit').textContent = inr(ytdProf);
+    document.getElementById('ytdRevSub').textContent = `Revenue: ${inr(ytdSale)}`;
+
+    document.getElementById('monthOrdersCount').textContent = mCount;
+    document.getElementById('allTimeProfitSummary').textContent = inr(allTimeProf);
+
+    const filteredTxns = transactions.filter(t => getMonthKey(t.date) === activeMonth);
+
+    filteredTxns.forEach(t => {
       const dateStr = new Date(t.date).toLocaleDateString('en-IN', {
-        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
       });
       const dishesStr = t.items.map(i => `${i.qty}× ${i.name}`).join(', ');
 
@@ -1087,6 +1395,8 @@
       root.appendChild(card);
     });
   }
+
+  document.getElementById('historyMonthSelect').addEventListener('change', renderHistory);
 
   document.getElementById('historyListing').addEventListener('click', e => {
     const delBtn = e.target.closest('.del-btn');
@@ -1278,26 +1588,26 @@
     window.open(waUrl, '_blank');
   });
 
-  // Export CSV
+  // Export Complete CSV with Month & Year Analysis
   document.getElementById('exportCsvBtn').addEventListener('click', () => {
     if(!transactions.length) {
       notify("No transactions to export yet.");
       return;
     }
-    let csv = "Txn ID,Date,Time,Customer,Phone,Dishes,Total Revenue,Total Cost,Net Profit\n";
+    let csv = "Txn ID,Date,Month_Year,Customer,Phone,Dishes,Total Revenue,Total Cost,Net Profit\n";
     transactions.forEach(t => {
       const d = new Date(t.date);
       const dateStr = d.toLocaleDateString('en-IN');
-      const timeStr = d.toLocaleTimeString('en-IN');
+      const moYr = getMonthDisplay(getMonthKey(t.date));
       const itemsStr = t.items.map(i => `${i.qty}x ${i.name}`).join(' | ');
-      csv += `"${t.id}","${dateStr}","${timeStr}","${t.custName||''}","${t.custPhone||''}","${itemsStr}",${t.totalSale},${t.totalCost},${t.totalProfit}\n`;
+      csv += `"${t.id}","${dateStr}","${moYr}","${t.custName||''}","${t.custPhone||''}","${itemsStr}",${t.totalSale},${t.totalCost},${t.totalProfit}\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Unnati_Munafa_Report_${new Date().toISOString().slice(0,10)}.csv`;
+    a.download = `Unnati_Kitchen_Monthly_Report_${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   });
