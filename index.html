@@ -10,7 +10,9 @@
 <meta name="theme-color" content="#1F1512">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<!-- Client-side HTML-to-Image renderer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --bg: #F8F5F0;
@@ -165,6 +167,55 @@
   .view-container { display: none; padding: 0 14px; }
   .view-container.active { display: block; }
 
+  /* Quick Menu Share Card in Log Order */
+  .quick-menu-share-card {
+    background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E6 100%);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 14px rgba(197, 131, 43, 0.12);
+  }
+  .quick-share-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .quick-share-desc {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .quick-share-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .q-btn {
+    border: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .q-btn-wa { background: #25D366; color: #FFF; }
+  .q-btn-dl { background: #0E5C39; color: #FFF; }
+
   /* Customer & Order Panel */
   .customer-panel {
     background: var(--surface);
@@ -210,7 +261,6 @@
     color: var(--ink);
   }
 
-  /* Phone input with contact picker */
   .phone-input-row {
     display: flex;
     gap: 8px;
@@ -320,7 +370,7 @@
     cursor: pointer;
   }
 
-  /* History Multi-Level Analytics Cards */
+  /* History Analytics */
   .history-summary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -435,70 +485,6 @@
   }
 
   /* Management & Menu Sharing Card */
-  .menu-share-banner {
-    background: linear-gradient(135deg, #FFFDF9 0%, #FAF2E6 100%);
-    border: 1.5px solid var(--accent);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 14px rgba(197, 131, 43, 0.12);
-  }
-  .share-banner-title {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 4px;
-  }
-  .share-banner-desc {
-    font-size: 12.5px;
-    color: var(--ink-muted);
-    margin-bottom: 14px;
-    line-height: 1.4;
-  }
-  
-  .flyer-preview-box {
-    background: #FFF;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 8px;
-    margin-bottom: 14px;
-    text-align: center;
-  }
-  .flyer-preview-img {
-    width: 100%;
-    max-height: 280px;
-    object-fit: contain;
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-
-  .share-btn-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .share-btn {
-    border: none;
-    padding: 12px 14px;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  .share-btn-wa { background: #25D366; color: #FFF; }
-  .share-btn-dl { background: #0E5C39; color: #FFF; }
-
   .manage-item-card {
     background: var(--surface);
     border: 1px solid var(--line);
@@ -665,6 +651,124 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   }
   .toast-banner.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* =========================================================
+     DYNAMIC OFF-SCREEN FLYER TEMPLATE (ALWAYS FRESH)
+     ========================================================= */
+  #dynamicFlyerNode {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 780px;
+    background: #FFFDF8;
+    background-image: radial-gradient(#F5EDE0 1.2px, transparent 1.2px);
+    background-size: 18px 18px;
+    padding: 28px 30px 22px;
+    border: 6px solid #0D5030;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: #1A1A1A;
+  }
+  .dyn-flyer-header {
+    text-align: center;
+    position: relative;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #C5832B;
+  }
+  .dyn-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #0D472B;
+    line-height: 1;
+  }
+  .dyn-brand-sub {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #1A1A1A;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .dyn-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #8C2525;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .dyn-veg-stamp {
+    position: absolute;
+    right: 0; top: 0;
+    background: #0D5030;
+    color: #FFF;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px dashed #FFF;
+  }
+  .dyn-category-section {
+    margin-top: 18px;
+  }
+  .dyn-cat-banner {
+    background: #0D5030;
+    color: #FFF;
+    padding: 4px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .dyn-items-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .dyn-item-row {
+    display: flex;
+    align-items: baseline;
+    font-size: 14.5px;
+    padding: 2px 0;
+  }
+  .dyn-item-name {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  .dyn-dots {
+    flex: 1;
+    border-bottom: 1.5px dotted #C7B9A5;
+    margin: 0 10px;
+    transform: translateY(-4px);
+  }
+  .dyn-item-price {
+    background: #FAF2E6;
+    color: #0D472B;
+    font-weight: 900;
+    font-size: 15.5px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid #E8D8C3;
+  }
+  .dyn-flyer-footer {
+    background: #0D5030;
+    color: #FFF;
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dyn-phone { font-size: 20px; font-weight: 900; letter-spacing: 0.5px; }
+  .dyn-addr { font-size: 13px; font-weight: 700; line-height: 1.2; text-align: right; }
 </style>
 </head>
 <body>
@@ -708,6 +812,24 @@
 
   <!-- View 1: New Sale -->
   <div class="view-container active" id="view-order">
+
+    <!-- Quick Menu Share Panel directly in Log Order Tab -->
+    <div class="quick-menu-share-card">
+      <div class="quick-share-title">
+        <span>✨ Customer Menu Card</span>
+        <span style="font-size:11px; color:var(--success); font-weight:800;">● Always Auto-Updated</span>
+      </div>
+      <div class="quick-share-desc">Download or send your live menu card directly to customers on WhatsApp:</div>
+      <div class="quick-share-actions">
+        <button type="button" class="q-btn q-btn-wa" id="logOrderShareWaBtn">
+          Share on WhatsApp
+        </button>
+        <button type="button" class="q-btn q-btn-dl" id="logOrderDownloadImgBtn">
+          Download Menu (JPG)
+        </button>
+      </div>
+    </div>
+
     <div class="customer-panel">
       <div class="cust-title">
         <span>Order Date & Customer Directory</span>
@@ -784,24 +906,6 @@
 
   <!-- View 3: Menu & Real Costs -->
   <div class="view-container" id="view-menu">
-    <div class="menu-share-banner">
-      <div class="share-banner-title">🌟 Official Customer Menu Flyer</div>
-      <div class="share-banner-desc">Download or share your exact branded menu card directly with customers on WhatsApp:</div>
-      
-      <div class="flyer-preview-box">
-        <img src="menu-card.jpeg" alt="Unnati Cloud Kitchen Menu Card" class="flyer-preview-img" onerror="this.src='https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=500&auto=format&fit=crop&q=60';">
-      </div>
-
-      <div class="share-btn-row">
-        <button class="share-btn share-btn-wa" id="shareMenuWhatsAppBtn">
-          Share on WhatsApp
-        </button>
-        <a href="menu-card.jpeg" download="Unnati_Cloud_Kitchen_Menu.jpeg" class="share-btn share-btn-dl" id="downloadMenuImgBtn">
-          Download Menu Card
-        </a>
-      </div>
-    </div>
-
     <p style="font-size:12.5px; color:var(--ink-muted); margin-bottom:14px; line-height:1.5;">
       Each dish & beverage is broken down into realistic ingredients, multi-compartment packaging/cups, and utility expenses. Edit any individual cost to reflect current market rates.
     </p>
@@ -835,6 +939,28 @@
   </div>
 
   <div class="toast-banner" id="toastMsg"></div>
+
+  <!-- OFF-SCREEN RENDERING ENGINE FOR HIGH-RES MENU CARD -->
+  <div id="dynamicFlyerNode">
+    <div class="dyn-flyer-header">
+      <div class="dyn-veg-stamp">🌿 100% Pure Veg</div>
+      <h1 class="dyn-brand-name">UNNATI</h1>
+      <div class="dyn-brand-sub">Cloud Kitchen</div>
+      <div class="dyn-tagline">Fresh, Pure & Hygienic Home-Cooked Food</div>
+    </div>
+
+    <div id="dynFlyerSections"></div>
+
+    <div class="dyn-flyer-footer">
+      <div>
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.85;">Call / WhatsApp to Order</div>
+        <div class="dyn-phone">9363719256</div>
+      </div>
+      <div>
+        <div class="dyn-addr">Jayendra Colony<br>Perungudi, Chennai</div>
+      </div>
+    </div>
+  </div>
 
 <script>
 (function(){
@@ -1084,7 +1210,7 @@
   let menu = [];
   let transactions = [];
   let cart = {};
-  let customerDirectory = {}; // { "Name": "Phone" }
+  let customerDirectory = {};
 
   const inr = n => "₹" + Math.round(n).toLocaleString('en-IN');
   const getDishCost = dish => (dish.costItems || []).reduce((acc, cur) => acc + (parseFloat(cur.amount) || 0), 0);
@@ -1122,7 +1248,7 @@
 
   function loadStorage() {
     try {
-      const m = localStorage.getItem('um_menu_v6');
+      const m = localStorage.getItem('um_menu_v7');
       menu = m ? JSON.parse(m) : INITIAL_MENU;
       const t = localStorage.getItem('um_txns');
       transactions = t ? JSON.parse(t) : [];
@@ -1142,7 +1268,7 @@
     sync();
   }
 
-  function commitMenu() { localStorage.setItem('um_menu_v6', JSON.stringify(menu)); }
+  function commitMenu() { localStorage.setItem('um_menu_v7', JSON.stringify(menu)); }
   function commitTxns() { localStorage.setItem('um_txns', JSON.stringify(transactions)); }
   function commitCustomers() { localStorage.setItem('um_customers', JSON.stringify(customerDirectory)); }
 
@@ -1157,7 +1283,6 @@
     });
   }
 
-  // Two-way Auto Pop: Type Name -> Fill Phone
   document.getElementById('orderCustName').addEventListener('input', (e) => {
     const val = e.target.value.trim();
     if(customerDirectory[val]) {
@@ -1165,7 +1290,6 @@
     }
   });
 
-  // Two-way Auto Pop: Dial/Type Phone -> Fill Name
   document.getElementById('orderCustPhone').addEventListener('input', (e) => {
     const phoneVal = cleanPhoneNumber(e.target.value);
     if(phoneVal.length === 10) {
@@ -1176,7 +1300,6 @@
     }
   });
 
-  // Native Contact Picker (Web Contact Picker API for mobile phones)
   document.getElementById('pickContactBtn').addEventListener('click', async () => {
     const isSupported = ('contacts' in navigator && 'ContactsManager' in window);
     if (isSupported) {
@@ -1192,8 +1315,6 @@
           if (contact.tel && contact.tel[0]) {
             const parsedPhone = cleanPhoneNumber(contact.tel[0]);
             document.getElementById('orderCustPhone').value = parsedPhone;
-            
-            // Auto save into directory
             if (contact.name && contact.name[0] && parsedPhone) {
               customerDirectory[contact.name[0]] = parsedPhone;
               commitCustomers();
@@ -1202,9 +1323,7 @@
           }
           notify("Contact details selected!");
         }
-      } catch (ex) {
-        // User cancelled picker or permission dismissed
-      }
+      } catch (ex) {}
     } else {
       notify("Select from saved list or dial 10-digit number below");
       document.getElementById('orderCustPhone').focus();
@@ -1216,6 +1335,7 @@
     renderCatalog();
     renderHistory();
     renderManagement();
+    renderDynamicFlyerDOM();
   }
 
   function refreshDashboard() {
@@ -1576,6 +1696,7 @@
       commitMenu();
       refreshDashboard();
       renderCatalog();
+      renderDynamicFlyerDOM();
     } else if(e.target.classList.contains('entry-name')) {
       const cid = e.target.dataset.cid;
       const c = dish.costItems.find(x => x.id === cid);
@@ -1588,6 +1709,7 @@
         commitMenu();
         refreshDashboard();
         renderCatalog();
+        renderDynamicFlyerDOM();
       }
     }
   });
@@ -1653,8 +1775,44 @@
     notify("Dish added with automatic cost drilldown!");
   });
 
-  // Feature: Share Text on WhatsApp
-  document.getElementById('shareMenuWhatsAppBtn').addEventListener('click', () => {
+  // Render Dynamic Flyer DOM matching current live menu
+  function renderDynamicFlyerDOM() {
+    const container = document.getElementById('dynFlyerSections');
+    container.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+      const items = menu.filter(m => m.cat === cat);
+      if(!items.length) return;
+
+      const sec = document.createElement('div');
+      sec.className = 'dyn-category-section';
+
+      const banner = document.createElement('div');
+      banner.className = 'dyn-cat-banner';
+      banner.textContent = cat;
+      sec.appendChild(banner);
+
+      const grid = document.createElement('div');
+      grid.className = 'dyn-items-grid';
+
+      items.forEach(dish => {
+        const row = document.createElement('div');
+        row.className = 'dyn-item-row';
+        row.innerHTML = `
+          <div class="dyn-item-name">${dish.name}</div>
+          <div class="dyn-dots"></div>
+          <div class="dyn-item-price">₹${dish.price}</div>
+        `;
+        grid.appendChild(row);
+      });
+
+      sec.appendChild(grid);
+      container.appendChild(sec);
+    });
+  }
+
+  // Common Action: Share formatted live text on WhatsApp
+  function triggerWhatsAppMenuShare() {
     if(!menu.length) {
       notify("No items in menu.");
       return;
@@ -1672,7 +1830,37 @@
     text += "\n🌿 100% Pure Vegetarian (No Onion, No Garlic Available)\n📍 Jayendra Colony, Perungudi, Chennai\n📞 Order: 9363719256";
     const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(waUrl, '_blank');
-  });
+  }
+
+  // Common Action: Render off-screen DOM to an image and trigger download
+  async function triggerDownloadDynamicMenuCard() {
+    notify("Creating your updated menu card...");
+    renderDynamicFlyerDOM();
+    const flyerNode = document.getElementById('dynamicFlyerNode');
+
+    try {
+      const canvas = await html2canvas(flyerNode, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#FFFDF8'
+      });
+
+      const imageURL = canvas.toDataURL('image/jpeg', 0.95);
+      const dlLink = document.createElement('a');
+      dlLink.download = `Unnati_Menu_${new Date().toISOString().slice(0,10)}.jpg`;
+      dlLink.href = imageURL;
+      dlLink.click();
+      notify("Updated Menu Card saved to gallery!");
+    } catch(err) {
+      notify("Error generating card. Please retry.");
+      console.error(err);
+    }
+  }
+
+  // Wire buttons in both Log Order and Menu tabs
+  document.getElementById('logOrderShareWaBtn').addEventListener('click', triggerWhatsAppMenuShare);
+  document.getElementById('logOrderDownloadImgBtn').addEventListener('click', triggerDownloadDynamicMenuCard);
 
   // Export Complete CSV with Month & Year Analysis
   document.getElementById('exportCsvBtn').addEventListener('click', () => {
