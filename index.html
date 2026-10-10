@@ -210,6 +210,30 @@
     color: var(--ink);
   }
 
+  /* Phone input with contact picker */
+  .phone-input-row {
+    display: flex;
+    gap: 8px;
+  }
+  .phone-input-row input {
+    flex: 1;
+  }
+  .contact-pick-btn {
+    background: var(--accent-soft);
+    color: var(--primary);
+    border: 1px solid var(--accent);
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
   /* Catalog */
   .category-heading {
     font-size: 18px;
@@ -687,7 +711,7 @@
     <div class="customer-panel">
       <div class="cust-title">
         <span>Order Date & Customer Directory</span>
-        <span style="font-size:11px; text-transform:none; font-weight:600; color:var(--success);">● Auto-Contact Pop-in Active</span>
+        <span style="font-size:11px; text-transform:none; font-weight:600; color:var(--success);">● Auto-Contact & Native Picker</span>
       </div>
       <div class="cust-input-grid">
         <div class="date-picker-row">
@@ -706,7 +730,13 @@
           <datalist id="customerDirectoryList"></datalist>
         </div>
         
-        <input type="tel" id="orderCustPhone" placeholder="10-digit WhatsApp No. (e.g. 9876543210)">
+        <div class="phone-input-row">
+          <input type="tel" id="orderCustPhone" placeholder="10-digit WhatsApp No. (e.g. 9876543210)">
+          <button type="button" class="contact-pick-btn" id="pickContactBtn">
+            <span>📇</span> Pick Contact
+          </button>
+        </div>
+
         <input type="text" id="orderCustNotes" placeholder="Delivery address / special instructions">
       </div>
     </div>
@@ -814,7 +844,6 @@
     return { id: 'c_' + Math.random().toString(36).substr(2, 7), label, amount: parseFloat(amount)||0 };
   }
 
-  // Master Initial Menu with Revised Beverage Pricing (v4.0)
   const INITIAL_MENU = [
     {
       id: "thali-special-jaljeera",
@@ -965,7 +994,6 @@
         cItem("LPG Burn", 2)
       ]
     },
-    // REVISED BEVERAGES PRICING
     {
       id: "bev-refreshing-lemonade",
       cat: "Beverages",
@@ -1030,7 +1058,7 @@
       id: "bev-rooh-afza",
       cat: "Beverages",
       name: "Rooh Afza Sharbat",
-      price: 35, // Updated to Rs 35
+      price: 35,
       costItems: [
         cItem("Authentic Rooh Afza Syrup (35ml)", 7.0),
         cItem("Chilled Milk / Lemon Water Base", 8.0),
@@ -1056,7 +1084,7 @@
   let menu = [];
   let transactions = [];
   let cart = {};
-  let customerDirectory = {};
+  let customerDirectory = {}; // { "Name": "Phone" }
 
   const inr = n => "₹" + Math.round(n).toLocaleString('en-IN');
   const getDishCost = dish => (dish.costItems || []).reduce((acc, cur) => acc + (parseFloat(cur.amount) || 0), 0);
@@ -1081,9 +1109,20 @@
     return d.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
   }
 
+  function cleanPhoneNumber(raw) {
+    if(!raw) return '';
+    let digits = raw.replace(/[^0-9]/g, '');
+    if(digits.length > 10 && digits.startsWith('91')) {
+      digits = digits.slice(-10);
+    } else if(digits.length > 10) {
+      digits = digits.slice(-10);
+    }
+    return digits;
+  }
+
   function loadStorage() {
     try {
-      const m = localStorage.getItem('um_menu_v5');
+      const m = localStorage.getItem('um_menu_v6');
       menu = m ? JSON.parse(m) : INITIAL_MENU;
       const t = localStorage.getItem('um_txns');
       transactions = t ? JSON.parse(t) : [];
@@ -1103,7 +1142,7 @@
     sync();
   }
 
-  function commitMenu() { localStorage.setItem('um_menu_v5', JSON.stringify(menu)); }
+  function commitMenu() { localStorage.setItem('um_menu_v6', JSON.stringify(menu)); }
   function commitTxns() { localStorage.setItem('um_txns', JSON.stringify(transactions)); }
   function commitCustomers() { localStorage.setItem('um_customers', JSON.stringify(customerDirectory)); }
 
@@ -1118,10 +1157,57 @@
     });
   }
 
+  // Two-way Auto Pop: Type Name -> Fill Phone
   document.getElementById('orderCustName').addEventListener('input', (e) => {
     const val = e.target.value.trim();
     if(customerDirectory[val]) {
       document.getElementById('orderCustPhone').value = customerDirectory[val];
+    }
+  });
+
+  // Two-way Auto Pop: Dial/Type Phone -> Fill Name
+  document.getElementById('orderCustPhone').addEventListener('input', (e) => {
+    const phoneVal = cleanPhoneNumber(e.target.value);
+    if(phoneVal.length === 10) {
+      const matchingName = Object.keys(customerDirectory).find(k => customerDirectory[k] === phoneVal);
+      if(matchingName && !document.getElementById('orderCustName').value.trim()) {
+        document.getElementById('orderCustName').value = matchingName;
+      }
+    }
+  });
+
+  // Native Contact Picker (Web Contact Picker API for mobile phones)
+  document.getElementById('pickContactBtn').addEventListener('click', async () => {
+    const isSupported = ('contacts' in navigator && 'ContactsManager' in window);
+    if (isSupported) {
+      try {
+        const props = ['name', 'tel'];
+        const opts = { multiple: false };
+        const contacts = await navigator.contacts.select(props, opts);
+        if (contacts && contacts.length > 0) {
+          const contact = contacts[0];
+          if (contact.name && contact.name[0]) {
+            document.getElementById('orderCustName').value = contact.name[0];
+          }
+          if (contact.tel && contact.tel[0]) {
+            const parsedPhone = cleanPhoneNumber(contact.tel[0]);
+            document.getElementById('orderCustPhone').value = parsedPhone;
+            
+            // Auto save into directory
+            if (contact.name && contact.name[0] && parsedPhone) {
+              customerDirectory[contact.name[0]] = parsedPhone;
+              commitCustomers();
+              populateCustomerDatalist();
+            }
+          }
+          notify("Contact details selected!");
+        }
+      } catch (ex) {
+        // User cancelled picker or permission dismissed
+      }
+    } else {
+      notify("Select from saved list or dial 10-digit number below");
+      document.getElementById('orderCustPhone').focus();
     }
   });
 
@@ -1241,7 +1327,7 @@
 
     const totalProfit = totalSale - totalCost;
     const custName = document.getElementById('orderCustName').value.trim();
-    const custPhone = document.getElementById('orderCustPhone').value.trim().replace(/[^0-9]/g, '');
+    const custPhone = cleanPhoneNumber(document.getElementById('orderCustPhone').value);
     const custNotes = document.getElementById('orderCustNotes').value.trim();
 
     if(custName && custPhone) {
